@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻找数组中的平衡点</title>
+</head>
+<body>
+    实现一个函数，传入一个整数数组nums（包含正数和负数），寻找nums中的所有平衡点，平衡点即左边的数字之和等于右边的数字之和？
+    <script>
+        const nums = [1, 7, 3, 6, 5, 6];
+        // const nums = [1, 2, 3];
+        // const nums = [2, 1, -1];
+        // function pivot (nums) {
+        //     const res = [];
+        //     for (let i = 0; i < nums.length; i++) {
+        //         let lSum = nums.slice(0, i).length ? nums.slice(0, i).reduce((sum, item) => {
+        //             return sum + item;
+        //         }) : 0;
+        //         let rSum = nums.slice(i + 1).length ? nums.slice(i + 1).reduce((sum, item) => {
+        //             return sum + item;
+        //         }) : 0;
+        //         if (lSum === rSum) {
+        //             res.push(nums[i])
+        //         }
+        //     }
+        //     return res;
+        // }
+        // function pivot (nums) {
+        //     const res = [];
+        //     const sum = nums.reduce((sum, item) => {
+        //         return sum + item;
+        //     })
+        //     for (let i = 0; i < nums.length; i++) {
+        //         let lSum = nums.slice(0, i).length ? nums.slice(0, i).reduce((sum, item) => {
+        //             return sum + item;
+        //         }) : 0;
+        //         let rSum = sum - lSum - nums[i];
+        //         if (lSum === rSum) {
+        //             res.push(nums[i]);
+        //         }
+        //     }
+        //     return res;
+        // }
+        function pivot (nums) {
+            const res = [];
+            const sum = nums.reduce((sum, item) => {
+                return sum + item;
+            });
+            for (let i = 0; i < nums.length; i++) {
+                let lSum = nums.slice(0, i).length ? nums.slice(0, i).reduce((sum, item) => {
+                    return sum + item;
+                }) : 0;
+                if (lSum * 2 + nums[i] === sum) {
+                    res.push(nums[i]);
+                }
+            }
+            return res;
+        }
+        console.log(pivot(nums));
+    </script>
+</body>
+</html>

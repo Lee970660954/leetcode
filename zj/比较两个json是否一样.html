@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比较两个json是否一样</title>
+</head>
+<body>
+    实现一个函数diffJson，用来判断两个json是否一样。
+    示例：
+    let a = {
+        "name": "alibaba",
+        "age": 20
+    };
+    let b = {
+        "name": "taobao",
+        "age": 18
+    };
+    let c = {
+        "name": "alibaba",
+        "age": 20
+    };
+    diffJson(a, b) // false
+    diffJson(a, c) // true
+    <p></p>
+    实现思路：
+    1.（单层对象）使用Object.entries，Object.entries方法返回指定对象的自身可枚举属性的键值对数组，然后将获取的两个数组转化为字符串，判断字符串是否相等。Object.entries的说明：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+    2.（单层对象）
+    （1）使用for in循环遍历对象1，并累加对象1的key的数量，在遍历的同时使用in方操作符判断对象2是否有该key且该key是否相同，相同则continue，否则返回false，
+    （2）如果上述遍历操作没有返回false，则使用Object.keys方法得到对象2的key数组，比较两个key数组的数量是否相同，相同则返回true，否则返回false。
+    3.（单层对象，多层对象）
+    再方法2的基础上，判断当前的属性值是否为引用类型，如果是则递归调用函数，否则执行后面流程。
+    
+
+
+    <!-- <script>
+        let a = {
+            "name": "alibaba",
+            "age": 20
+        };
+        let b = {
+            "name": "taobao",
+            "age": 18
+        };
+        let c = {
+            "name": "alibaba",
+            "age": 20
+        };
+        let d = {
+            "name": "alibaba",
+            "age": 20,
+            "job": "engineer"
+        };
+        function diffJson (prev, next) {
+            let pKeys = [];
+            let nKeys = [];
+            for (let key in prev) {
+                pKeys.push(key);
+                if (key in next) {
+                    if (next[key] === prev[key]) {
+                        continue;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            nKeys = Object.keys(next);
+            if (pKeys.length === nKeys.length) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        console.log(diffJson(a, b));
+        console.log(diffJson(a, c));
+        console.log(diffJson(a, d));
+        console.log(diffJson(d, a));
+    </script> -->
+
+    <!-- <script>
+        let a = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1
+            }
+        };
+        let b = {
+            "name": "taobao",
+            "age": 18
+        };
+        let c = {
+            "name": "alibaba",
+            "age": 20,
+        };
+        let d = {
+            "name": "alibaba",
+            "age": 20,
+            "job": "engineer"
+        };
+        let e = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1
+            }
+        };
+        let f = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 2
+            }
+        };
+        let g = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": 1
+            }
+        };
+        let h = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 11
+                }
+            }
+        };
+        let i = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 11
+                }
+            }
+        };
+        let j = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 12
+                }
+            }
+        };
+        function isObject (target) {
+            return target && typeof target === "object";
+        }
+        function diffJson (prev, next) {
+            let pKeys = [];
+            let nKeys = [];
+            for (let key in prev) {
+                pKeys.push(key);
+                if (key in next) {
+                    if (isObject(next[key]) && isObject(prev[key])) {
+                        const subRes = diffJson(prev[key], next[key]);
+                        if (subRes) {
+                            continue
+                        } else {
+                            return false;
+                        }
+                    }
+                    if (next[key] === prev[key]) {
+                        continue;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            nKeys = Object.keys(next);
+            if (pKeys.length === nKeys.length) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        // console.log(diffJson(a, b));
+        // console.log(diffJson(a, c));
+        // console.log(diffJson(a, d));
+        // console.log(diffJson(d, a));
+        console.log(diffJson(a, e));
+        console.log(diffJson(a, f));
+        console.log(diffJson(a, g));
+        console.log(diffJson(g, a));
+        console.log(diffJson(h, i));
+        console.log(diffJson(i, j));
+    </script> -->
+    <script>
+        let a = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1
+            }
+        };
+        let b = {
+            "name": "taobao",
+            "age": 18
+        };
+        let c = {
+            "name": "alibaba",
+            "age": 20,
+        };
+        let d = {
+            "name": "alibaba",
+            "age": 20,
+            "job": "engineer"
+        };
+        let e = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1
+            }
+        };
+        let f = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 2
+            }
+        };
+        let g = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": 1
+            }
+        };
+        let h = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 11
+                }
+            }
+        };
+        let i = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 11
+                }
+            }
+        };
+        let j = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 12
+                }
+            }
+        };
+        var k = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 12
+                }
+            },
+            "oo": k
+        };
+        var l = {
+            "name": "alibaba",
+            "age": 20,
+            "o": {
+                "o1": 1,
+                "o2": {
+                    "o11": 12
+                }
+            },
+            "oo": l
+        };
+        function isObject (target) {
+            return target && typeof target === "object";
+        }
+        // function diffJson (prev, next) {
+        //     let pKeys = [];
+        //     let nKeys = [];
+        //     for (let key in prev) {
+        //         pKeys.push(key);
+        //         if (key in next) {
+        //             if (isObject(next[key]) && isObject(prev[key])) {
+        //                 const subRes = diffJson(prev[key], next[key]);
+        //                 if (key === "00") {
+        //                     console.log(subRes)
+        //                 }
+        //                 if (subRes) {
+        //                     continue
+        //                 } else {
+        //                     return false;
+        //                 }
+        //             }
+        //             if (next[key] === prev[key]) {
+        //                 continue;
+        //             } else {
+        //                 return false;
+        //             }
+        //         } else {
+        //             return false;
+        //         }
+        //     }
+        //     nKeys = Object.keys(next);
+        //     if (pKeys.length === nKeys.length) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // }
+        function diffJson (prev, next) {
+            return Object.entries(prev).toString() === Object.entries(next).toString()
+        }
+        // console.log(diffJson(a, b));
+        // console.log(diffJson(a, c));
+        // console.log(diffJson(a, d));
+        // console.log(diffJson(d, a));
+        // console.log(diffJson(a, e));
+        // console.log(diffJson(a, f));
+        // console.log(diffJson(a, g));
+        // console.log(diffJson(g, a));
+        // console.log(diffJson(h, i));
+        // console.log(diffJson(i, j));
+        // console.log(diffJson(k, l));
+    </script>
+</body>
+</html>

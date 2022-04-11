@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现数字转金额</title>
+</head>
+<body>
+    实现数字转金额功能，即把123456789转为¥123,456,789
+    <script>
+        // const number = 123456789;
+        const number = 1234567;
+        function priceLoader (number) {
+            const arr = number.toString().split("").reverse();
+            const priceArr = arr.map((item, index) => {
+                if (index && index%3 === 0) {
+                    return `${item},`;
+                } else {
+                    return item;
+                }
+            });
+            const price = `¥${priceArr.reverse().join("")}`;
+            return price;
+        }
+        console.log(priceLoader(number));
+    </script>
+</body>
+</html>

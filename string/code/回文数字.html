@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回文数字</title>
+</head>
+<body>
+    判断一个正整数是否是回文数？
+    121, 1331, 12321, 123123
+    <script>
+        // const number = 121;
+        // const number = 1331;
+        // const number = 12321;
+        const number = 123123;
+        // function isPlalindrome (number) {
+        //     const reNumber = number.toString().split("").reverse().join("");
+        //     console.log(number, reNumber);
+        //     if (number == reNumber) {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // }
+        function isPlalindrome (number) {
+            const arr = number.toString().split("");
+            let l = 0,
+                r = arr.length - 1;
+            while (l < r) {
+                if (arr[l] !== arr[r]) {
+                    return false;
+                }
+                l++;
+                r--;
+            }
+            return true;
+        }
+        console.log(isPlalindrome(number));
+    </script>
+</body>
+</html>

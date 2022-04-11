@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>有效的括号</title>
+</head>
+<body>
+    给定一个包含"({[]})"的字符串，判断该字符串括号的闭合是否合法？
+    <script>
+        // const s = "()[]{}";
+        // const s = "([)]";
+        // const s = "((";
+        // const s = "(111)222[333]444{555}666";
+        function isValid (s) {
+            const stack = [];
+            for (let i = 0; i < s.length; i++) {
+                let cur;
+                if (s[i] === "(") {
+                    cur = ")";
+                } else if (s[i] === "[") {
+                    cur = "]";
+                } else if (s[i] === "{") {
+                    cur = "}";
+                }
+                if (cur) {
+                    stack.push(cur);
+                    continue;
+                }
+                let anotherCur;
+                if (s[i] === ")" || s[i] === "]" || s[i] === "}") {
+                    anotherCur = stack.pop();
+                    if (s[i] === anotherCur) {
+                        continue;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            return stack.length === 0;
+        }
+        console.log(isValid(s))
+    </script>
+</body>
+</html>
