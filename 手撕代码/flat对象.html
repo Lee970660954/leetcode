@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flat对象</title>
+</head>
+<body>
+    <script>
+        // 输入对象为 entryObj = { a: { b: { c: { dd: "abcdd", }, },d: { xx: "ad", },e: "ae", },};
+        // 输出对象为 outputObj = { 'a.b.c.dd': 'abcdd', 'a.d.xx': 'ad', 'a.e': 'ae' }
+        const entryObj = { 
+            a: { 
+                b: { 
+                    c: { 
+                        dd: "abcdd", 
+                    }, 
+                },
+                d: { 
+                    xx: "ad", 
+                },
+                e: "ae", 
+            }
+        };
+        function flat (obj, prevKey = "", res = {}) {
+            Object.entries(obj).map(([key, val]) => {
+                if (Object.prototype.toString.call(val) === "[object Object]") {
+                    flat(val, `${prevKey}${key}.`, res);
+                } else {
+                    res[`${prevKey}${key}`] = val;
+                }
+            })
+            return res;
+        }
+        console.log(flat(entryObj))
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手写Promise.all</title>
+</head>
+<body>
+    <script>
+        // 1.入参是数组类型，数组项中的非Promise实例，需要用Promise.resolve转化为Promise实例。
+        // 2.所有数组项都执行完毕才会返回，并且是按照输入顺序返回，除此之外，如果任意一个数组项执行失败，则返回该失败原因。
+        // 3.返回一个Promise实例。
+        function all (options) {
+            const len = options.length,
+                sym = Symbol("sym"),
+                result = new Array(len).fill(sym);
+            return new Promise((resolve, reject) => {
+                for (let i = 0; i < len; i++) {
+                    let item = options[i];
+                    if (!(item instanceof Promise)) {
+                        item = Promise.resolve(item);
+                    }
+                    item.then(res => {
+                        result[i] = res;
+                        const fin = result.every(item => {
+                            return item !== sym;
+                        })
+                        if (fin) {
+                            resolve(result);
+                        }
+                    }, err => {
+                        reject(err);
+                    })
+                }
+            })
+        }
+        let p1 = 1;
+        let p2 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(500);
+                // reject(500);
+            }, 500)
+        })
+        let p3 = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(3000);
+            }, 3000)
+        })
+        all([p1, p2, p3])
+        .then(res => {
+            console.log("res", res);
+        })
+    </script>
+</body>
+</html>

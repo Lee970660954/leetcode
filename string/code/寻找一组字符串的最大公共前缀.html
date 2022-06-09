@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>寻找一组字符串的最大公共前缀</title>
+</head>
+<body>
+    <script>
+        // ['abcd', 'abdc', 'abbb'] => 'ab'
+        // ['abcd', 'ab', 'b'] => '' 
+        // ["flower","flow","flight"] => 'fl'
+
+        // 解法一
+        // function search (arr) {
+        //     let res = "";
+        //     let maxlItem = "";
+        //     let count = 0;
+        //     arr.map(item => {
+        //         if (item.length > maxlItem.length) {
+        //             maxlItem = item;
+        //         }
+        //     })
+        //     while (count < maxlItem.length) {
+        //         let cur = maxlItem[count];
+        //         let flag = arr.every(item => {
+        //             return item[count] === cur;
+        //         })
+        //         if (flag) {
+        //             res += cur;
+        //             count++;
+        //         } else {
+        //             break;
+        //         }
+        //     }
+        //     return res;
+        // }
+
+        // 解法二
+        function search (arr) {
+            const first = arr.length ? arr[0].split("") : null;
+            let res = "";
+            if (first) {
+                for (let i = 0; i < first.length; i++) {
+                    let cur = first[i];
+                    let num = 0;
+                    arr.map(item => {
+                        item[i] === cur ? num++ : "";
+                    })
+                    if (num === arr.length) {
+                        res += cur;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            return res;
+        }
+        // console.log(search(['abcd', 'abdc', 'abbb']))
+        // console.log(search(['abcd', 'ab', 'b']))
+        console.log(search(["flower","flow","flight"]))
+    </script>
+</body>
+</html>
