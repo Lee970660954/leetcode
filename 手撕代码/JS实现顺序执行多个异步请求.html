@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS实现顺序执行多个异步请求</title>
+</head>
+<body>
+    <script>
+        function orderRequest (urls = []) {
+            const total = urls.length;
+            const res = new Array(total).fill(false);
+            return new Promise((resolve, reject) => {
+                next();
+                function next () {
+                    let cur = 0; 
+                }
+            })
+        }
+    </script>
+</body>
+</html>

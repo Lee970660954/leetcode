@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>从中序与后序遍历序列构造二叉树</title>
+</head>
+<body>
+<script>
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {number[]} inorder
+ * @param {number[]} postorder
+ * @return {TreeNode}
+ */
+var buildTree = function(inorder, postorder) {
+    const len = inorder.length;
+    if (len === 0) return null;
+    return dfs(inorder, 0, inorder.length - 1, postorder, 0, postorder.length - 1);
+};
+
+var dfs = function(inorder, inorderStart, inorderEnd, postorder, postorderStart, postorderEnd) {
+    if (postorderStart > postorderEnd) {
+        return null;
+    }
+    const rootValue = postorder[postorderEnd];
+    const node = new TreeNode(rootValue);
+    if (postorderStart === postorderEnd) {
+        return node;
+    }
+    let leftLen = 0;
+    while (inorder[inorderStart + leftLen] !== rootValue) {
+        leftLen++;
+    }
+    node.left = dfs(inorder, inorderStart, inorderStart + leftLen - 1, postorder, postorderStart, postorderStart + leftLen - 1);
+    node.right = dfs(inorder, inorderStart + leftLen + 1, inorderEnd, postorder, postorderStart + leftLen, postorderEnd - 1);
+    return node;
+}
+</script>
+</body>
+</html>
