@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>找到有序数组中被删除的数字</title>
+</head>
+<body>
+    <!-- 有序数组[2,3,4,5,6,7],去掉一位非头尾的数字(6)然后乱序[3,5,7,2,4]，实现函数找到去掉的数字是什么(最好复杂度控制在 O(n)) -->
+    <script>
+        let arr = [3,5,7,2,4];
+        function findDeleteItem (arr) {
+            let min = arr[0];
+            let max = arr[0];
+            let res;
+            arr.map(item => {
+                if (item < min) {
+                    min = item;
+                }
+                if (item > max) {
+                    max = item;
+                }
+            })
+            while (min < max) {
+                ++min;
+                if (arr.indexOf(min) === -1) {
+                    res = min; 
+                    break;
+                }
+            }
+            return res;
+        }
+        console.log(findDeleteItem(arr));
+    </script>
+</body>
+</html>
