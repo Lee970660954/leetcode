@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现new操作符</title>
+</head>
+<body>
+    <script>
+        function Person (name, age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        Person.prototype.say = function () {
+            console.log("say", this.name, this.age);
+        }
+
+        function newOperator () {
+            const args = [...arguments];
+            const ctor = args[0];
+            if (typeof ctor !== "function") {
+                throw new Error("The first param must be type of 'function'")
+            }
+            const prototype = ctor.prototype;
+            const obj = Object.create(prototype);
+            const res = Person.apply(obj, args.slice(1));
+            function isObject (target) {
+                return target && typeof target === "object";
+            }
+            function isFunction (target) {
+                return typeof target === "function";
+            }
+            if (isObject(res) || isFunction(res)) {
+                return res;
+            }
+            return obj;
+        }
+        const lyj = newOperator(Person, "lyj", 26);
+        const wjq = newOperator(Person, "wjq", 27);
+        lyj.say();
+        wjq.say();
+    </script>
+</body>
+</html>

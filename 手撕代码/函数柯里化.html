@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数柯里化</title>
+</head>
+<body>
+    <script>
+        // 实现add(1)(2)(3)(4)输出10。
+        // function add (a, b, c, d) {
+        //     const args = [...arguments];
+        //     return args.reduce((res, item) => {
+        //         return res + item;
+        //     })
+        // }
+
+        // function curring (fn) {
+        //     const len = fn.length;
+        //     let args = [];
+        //     return function c (...newArgs) {
+        //         args = [...args, ...newArgs];
+        //         if (args.length < len) {
+        //             return c;
+        //         } else {
+        //             return fn.apply(this, args);
+        //         }
+        //     }
+        // }
+
+        // const addCurred = curring(add);
+        // // const res = addCurred(1)(2)(3)(4);
+        // const res = addCurred(1)(2, 3)(4);
+        // console.log(res);
+
+
+        // 实现add(1)(2)(3)(4)()输出10。
+
+        function add () {
+            const args = [...arguments];
+            return args.reduce((res, item) => {
+                return res + item;
+            })
+        }
+        function curring (fn) {
+            let args = [];
+            return function c (...newArgs) {
+                if ([...newArgs].length) {
+                    args = [...args, ...newArgs];
+                    return c;
+                } else {
+                    return fn.apply(this, args);
+                }
+            }
+        }
+        
+        const addCurred = curring(add);
+        const res = addCurred(1)(2)(3)(4)(5)();
+        console.log(res)
+    </script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>判断给定的html标签是否闭合</title>
+</head>
+<body>
+    <script>
+        let html = "<div><a></a></div>";
+        // let html = "<div><span></div></span>";
+        // let html = "<div><div><em></em></div><p></p ></div>";
+        function isValidHtml (html) {
+            const strArr = html.replace(/></g, ",").replace(/<|>/g, "").split(",");
+            const stack = [];
+            strArr.map(item => {
+                let topItem = [...stack].pop();
+                if (item.trim() === `/${topItem}`.trim()) {
+                    stack.pop();
+                } else {
+                    stack.push(item);
+                }
+            })
+            return !stack.length;
+        }
+        console.log(isValidHtml(html))
+    </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>flat对象升级版</title>
+</head>
+
+<body>
+    <script>
+        const obj = {
+            person: {
+                area: [{
+                    city: '北京',
+                }, {
+                    street: '西北旺'
+                }],
+                name: 'randolph',
+                home: {
+                    province: '山西'
+                }
+            }
+        }
+
+        function objFlat(obj, prevKey = "", res = {}) {
+            Object.entries(obj).map(([key, val]) => {
+                if (typeof val === "object") {
+                    if (Array.isArray(val)) {
+                        val.map((item, index) => {
+                            objFlat(item, `${prevKey}${key}[${index}].`, res);
+                        })
+                    } else {
+                        objFlat(val, `${prevKey}${key}.`, res);
+                    }
+                } else {
+                    res[`${prevKey}${key}`] = val;
+                }
+            })
+            return res;
+        }
+        console.log(objFlat(obj))
+    </script>
+</body>
+
+</html>
