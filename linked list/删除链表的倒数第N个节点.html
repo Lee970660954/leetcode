@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>删除链表的倒数第N个节点</title>
+</head>
+<body>
+<script>
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} n
+ * @return {ListNode}
+ */
+// var removeNthFromEnd = function(head, n) {
+//     const empty = new ListNode();
+//     let len = 0,
+//         count = 1,
+//         m,
+//         cur = empty;
+//     empty.next = head;
+//     while (cur) {
+//         len++;
+//         cur = cur.next;
+//     }
+//     m = len - n;
+//     if (m >= len || m <= 0) {
+//         return head;
+//     }
+//     cur = empty;
+//     while (count < m) {
+//         count++;
+//         cur = cur.next;
+//     }
+//     cur.next = cur.next.next;
+//     return empty.next;
+// };
+
+var removeNthFromEnd = function(head, n) {
+    const stack = [],
+        empty = new ListNode();
+    let count = 0,
+        len = 0,
+        cur = empty,
+        prev;
+    empty.next = head;
+    while (cur) {
+        stack.push(cur);
+        cur = cur.next;
+        len++;
+    }
+    if (n >= len || n <= 0) {
+        return head;
+    }
+    while (count < n) {
+        count++;
+        cur = stack.pop();
+    }
+    prev = stack.pop();
+    prev.next = cur.next;
+    return empty.next;
+}
+</script>
+</body>
+</html>

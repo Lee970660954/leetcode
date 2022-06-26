@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>相交链表</title>
+</head>
+<body>
+<script>
+//     1
+// [1,2,3,4,5,6,7,8,9,10,11,12,13]
+// [1,2,3,4,5,6,7,8,9,10,11,12,13]
+// 0
+// 0
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} headA
+ * @param {ListNode} headB
+ * @return {ListNode}
+ */
+// var getIntersectionNode = function(headA, headB) {
+//     const stackA = [],
+//         stackB = [];
+//     let curA = headA,
+//         curB = headB,
+//         res = null;
+//     while (curA) {
+//         stackA.push(curA);
+//         curA = curA.next;
+//     }
+//     while (curB) {
+//         stackA.push(curB);
+//         curB = curB.next;
+//     }
+//     curA = headA;
+//     curB = headB;
+//     while (curB) {
+//         stackB.push(curB);
+//         curB = curB.next;
+//     }
+//     while (curA) {
+//         stackB.push(curA);
+//         curA = curA.next;
+//     }
+//     curA = stackA.pop();
+//     curB = stackB.pop();
+//     if (curA !== curB) {
+//         return null;
+//     }
+//     while (stackA.length) {
+//         res = curA;
+//         curA = stackA.pop();
+//         curB = stackB.pop();
+//         if (curA && curB && curA !== curB) {
+//             break;
+//         }
+//         if (!stackA.length) {
+//             if (curA === curB) {
+//                 res = curA;
+//             }
+//         }
+//     }
+//     return res;
+// };
+
+var getIntersectionNode = function(headA, headB) {
+    let lenA = 0,
+        lenB = 0,
+        curA = headA,
+        curB = headB,
+        count = 0,
+        res = null;
+    while (curA) {
+        lenA++;
+        curA = curA.next;
+    }
+    while (curB) {
+        lenB++;
+        curB = curB.next;
+    }
+    curA = headA;
+    curB = headB;
+    if (lenA > lenB) {
+        while (count < lenA - lenB) {
+            count++;
+            curA = curA.next;
+        }
+    } else {
+        while (count < lenB - lenA) {
+            count++;
+            curB = curB.next;
+        }
+    }
+    while (curA && curB) {
+        if (curA === curB) {
+            res = curA;
+            break;
+        }
+        curA = curA.next;
+        curB = curB.next;
+    }
+    return res;
+}
+</script>
+</body>
+</html>

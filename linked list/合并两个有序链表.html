@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合并两个有序链表</title>
+</head>
+<body>
+<script>
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} list1
+ * @param {ListNode} list2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function(list1, list2) {
+    const empty = new ListNode();
+    let cur1 = list1,
+        cur2 = list2,
+        cur = empty;
+    while (cur1 || cur2) {
+        if (cur1 && cur2) {
+            let node = new ListNode();
+            if (cur1.val < cur2.val) {
+                node.val = cur1.val;
+                cur1 = cur1.next;
+            } else {
+                node.val = cur2.val;
+                cur2 = cur2.next;
+            }
+            cur.next = node;
+            cur = cur.next;
+        } else if (!cur1) {
+            cur.next = cur2;
+            break;
+        } else if (!cur2) {
+            cur.next = cur1;
+            break;
+        }
+    }
+    return empty.next;
+};
+</script>
+</body>
+</html>

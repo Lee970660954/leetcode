@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇偶链表</title>
+</head>
+<body>
+<script>
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var oddEvenList = function(head) {
+    if (!head) {
+        return null
+    }
+    const queueOdd = [],
+        queueEven = [],
+        empty = new ListNode();
+    let count = 1,
+        cur = head;
+    while (cur) {
+        let isOdd = count % 2;
+        if (isOdd) {
+            queueOdd.push(cur)
+        } else {
+            queueEven.push(cur);
+        }
+        cur = cur.next;
+        count++;
+    }
+    cur = queueOdd.shift();
+    empty.next = cur;
+    while (queueOdd.length) {
+        let next = queueOdd.shift();
+        let node = new ListNode(next.val);
+        cur.next = node;
+        cur = node;
+    }
+    while (queueEven.length) {
+        let next = queueEven.shift();
+        let node = new ListNode(next.val);
+        cur.next = node;
+        cur = node;
+    }
+    return empty.next;
+};
+</script>
+</body>
+</html>

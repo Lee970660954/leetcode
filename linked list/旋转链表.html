@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋转链表</title>
+</head>
+<body>
+<script>
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+var rotateRight = function(head, k) {
+    const stack = [];
+    let len = 0,
+        cur = head,
+        prev,
+        tail,
+        count = 0;
+    while (cur) {
+        stack.push(cur);
+        len++;
+        if (!cur.next) {
+            tail = cur;
+        }
+        cur = cur.next;
+    }
+    k = k % len;
+    if (!k) {
+        return head;
+    }
+    cur = head;
+    while (count < k) {
+        cur = stack.pop();
+        count++;
+    }
+    if (stack.length) {
+        prev = stack.pop();
+    }
+    prev.next = null;
+    tail.next = head;
+    return cur;
+};
+</script>
+</body>
+</html>
