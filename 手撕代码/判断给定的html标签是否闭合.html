@@ -11,17 +11,34 @@
         let html = "<div><a></a></div>";
         // let html = "<div><span></div></span>";
         // let html = "<div><div><em></em></div><p></p ></div>";
-        function isValidHtml (html) {
-            const strArr = html.replace(/></g, ",").replace(/<|>/g, "").split(",");
+        // function isValidHtml (html) {
+        //     const strArr = html.replace(/></g, ",").replace(/<|>/g, "").split(",");
+        //     const stack = [];
+        //     strArr.map(item => {
+        //         let topItem = [...stack].pop();
+        //         if (item.trim() === `/${topItem}`.trim()) {
+        //             stack.pop();
+        //         } else {
+        //             stack.push(item);
+        //         }
+        //     })
+        //     return !stack.length;
+        // }
+        function isValid (str) {
+            const arr = str.replace(/>(\d){0,}</g, ",").replace(/<|>/g, "").split(",");
             const stack = [];
-            strArr.map(item => {
-                let topItem = [...stack].pop();
-                if (item.trim() === `/${topItem}`.trim()) {
-                    stack.pop();
+            for (let i = 0; i < arr.length; i++) {
+                if (!/\//.test(arr[i])) {
+                    stack.push(`/${arr[i]}`);
                 } else {
-                    stack.push(item);
+                    let top = stack.pop();
+                    if (top === arr[i]) {
+                        continue;
+                    } else {
+                        return false;
+                    }
                 }
-            })
+            }
             return !stack.length;
         }
         console.log(isValidHtml(html))

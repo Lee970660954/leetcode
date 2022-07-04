@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现async await</title>
+</head>
+<body>
+<script>
+function request (num) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve(num * 2)
+        }, 1000)
+    })
+}
+
+function * gen (i) {
+    const num1 = yield request(i);
+    const num2 = yield request(num1);
+    const num3 = yield request(num2);
+    // return num3;
+} 
+function generatorToAsync (gen) {
+    return function () {
+        const g = gen.apply(this, [...arguments]);
+        return new Promise((resolve, reject) => {
+            function go (key, val) {
+                let res;
+                try {
+                    res = g[key](val);
+                } catch (error) {
+                    reject(error);
+                }
+                const { value, done } = res;
+                if (done) {
+                    resolve(value);
+                } else {
+                    return Promise.resolve(value)
+                    .then(r => {
+                        go("next", r);
+                    }, e => {
+                        go("throw", e);
+                    })
+                }
+            }
+            go("next");
+        })
+    }
+}
+
+// const g = gen();
+// console.log("g", g);
+// console.log("g1", g.next());
+// console.log("g2", g.next());
+// console.log("g3", g.next());
+// console.log("g4", g.next());
+
+const gAsync = generatorToAsync(gen);
+// console.log("g", gAsync);
+gAsync(1).then(res => {
+    console.log(res);
+})
+
+</script>
+</body>
+</html>
