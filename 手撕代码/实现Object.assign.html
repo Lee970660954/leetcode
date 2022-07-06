@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现Object.assign</title>
+</head>
+<body>
+<script>
+// const res = Object.assign(
+//   {
+//     a: 1,
+//     b: {
+//       c: 2,
+//     },
+//   },
+//   {
+//     b: {
+//       d: 3,
+//     },
+//   }
+// );
+// console.log("res", res);
+function isObject (target) {
+    return target && typeof target === 'object';
+}
+
+// function assign (prev, next) {
+//     const pKeys = Object.keys(prev),
+//         nKeys = Object.keys(next);
+//     pKeys.map(key => {
+//         if (nKeys.indexOf(key) !== -1) {
+//             if (isObject(prev[key]) && isObject(next[key])) {
+//                 assign(prev[key], next[key]);
+//             } else {
+//                 prev[key] = next[key];
+//             }
+//         }
+//     });
+//     nKeys.map(key => {
+//         if (pKeys.indexOf(key) === -1) {
+//             prev[key] = next[key];
+//         }
+//     });
+//     return prev;
+// }
+// console.log(assign(
+//     {
+//         a: 1,
+//         b: {
+//             c: 2,
+//         },
+//     },
+//     {
+//         b: {
+//             d: 3,
+//         },
+//     }
+// ))
+// console.log(assign(
+//     {
+//         a: 1,
+//         b: {
+//             c: {
+//                 cv1: 2
+//             },
+//         },
+//     },
+//     {
+//         b: {
+//             c: {
+//                 cv2: 3
+//             },
+//             d: {
+//                 dv: 3
+//             },
+//         },
+//     }
+// ))
+
+
+
+
+function assign () {
+    const args = [...arguments];
+    function assignFn (prev, next) {
+        const pKeys = Object.keys(prev),
+            nKeys = Object.keys(next);
+        pKeys.map(key => {
+            if (nKeys.indexOf(key) !== -1) {
+                if (isObject(prev[key]) && isObject(next[key])) {
+                    assignFn(prev[key], next[key]);
+                } else {
+                    prev[key] = next[key];
+                }
+            }
+        });
+        nKeys.map(key => {
+            if (pKeys.indexOf(key) === -1) {
+                prev[key] = next[key];
+            }
+        });
+        return prev;
+    }
+    args.reduce((target, cur) => {
+        return assignFn(target, cur);
+    })
+    return args[0];
+}
+console.log(assign(
+    {
+        a: 1,
+        b: {
+            c: 2,
+        },
+    },
+    {
+        b: {
+            d: 3,
+        },
+    },
+    {
+        b: {
+            d: 4,
+            e: 5
+        },
+    }
+))
+</script>
+</body>
+</html>
