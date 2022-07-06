@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现一个retry自动重试函数</title>
+</head>
+<body>
+<script>
+function retry (fn, times) {
+    function retryFn (times) {
+        return new Promise(async (resolve, reject) => {
+            fn()
+            .then(res => {
+                console.log(`调用成功${res}, ${times}`);
+                resolve(`调用成功${res}, ${times}`);
+            })
+            .catch(err => {
+                if (times) {
+                    console.log(`调用失败${err}, ${times}`);
+                    retryFn(--times);
+                } else {
+                    reject(`调用失败${err}, ${times}`);
+                }
+            })
+        })
+    }
+    retryFn(times);
+}
+
+let testTimes = 8;
+function testFn () {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (testTimes > 0) {
+                testTimes--;
+                reject(`testTimes大于0`);
+            } else {
+                resolve(`testTimes不大于0，${testTimes}`);
+            }
+        }, 500)
+    })
+}
+
+retry(testFn, 10);
+// retry(testFn, 4);
+</script>
+</body>
+</html>
